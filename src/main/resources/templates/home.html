@@ -1,213 +1,238 @@
 <!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport">
 
-        <link rel="stylesheet" type="text/css" media="all" th:href="@{/css/bootstrap.min.css}">
+    <link media="all" rel="stylesheet" th:href="@{/css/bootstrap.min.css}" type="text/css">
 
-        <title>Home</title>
-    </head>
-    <body class="p-3 mb-2 bg-light text-black">
-        <div class="container">
-            <div id="logoutDiv">
-                <form th:action=@{/logout} method="POST">
-                    <button type="submit" class="btn btn-secondary float-right">Logout</button>
-                </form>
+    <title>Home</title>
+</head>
+<body class="p-3 mb-2 bg-light text-black">
+<div class="container">
+    <div id="logoutDiv">
+        <form method="POST" th:action="@{/logout}">
+            <button class="btn btn-secondary float-right" type="submit">Logout</button>
+        </form>
+    </div>
+    <div id="contentDiv" style="clear: right;">
+        <nav style="clear: right;">
+            <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                <a aria-controls="nav-files" aria-selected="true" class="nav-item nav-link active" data-toggle="tab"
+                   href="#nav-files"
+                   id="nav-files-tab" role="tab">Files</a>
+                <a aria-controls="nav-notes" aria-selected="false" class="nav-item nav-link" data-toggle="tab"
+                   href="#nav-notes"
+                   id="nav-notes-tab" role="tab">Notes</a>
+                <a aria-controls="nav-credentials" aria-selected="false" class="nav-item nav-link" data-toggle="tab"
+                   href="#nav-credentials" id="nav-credentials-tab" role="tab">Credentials</a>
             </div>
-            <div id="contentDiv" style="clear: right;">
-                <nav style="clear: right;">
-                    <div class="nav nav-tabs" id="nav-tab" role="tablist">
-                        <a class="nav-item nav-link active" id="nav-files-tab" data-toggle="tab" href="#nav-files" role="tab" aria-controls="nav-files" aria-selected="true">Files</a>
-                        <a class="nav-item nav-link" id="nav-notes-tab" data-toggle="tab" href="#nav-notes" role="tab" aria-controls="nav-notes" aria-selected="false">Notes</a>
-                        <a class="nav-item nav-link" id="nav-credentials-tab" data-toggle="tab" href="#nav-credentials" role="tab" aria-controls="nav-credentials" aria-selected="false">Credentials</a>
-                    </div>
-                </nav>
-                <div class="tab-content" id="nav-tabContent">
-                    <div class="tab-pane fade show active" id="nav-files" role="tabpanel" aria-labelledby="nav-files-tab">
-                        <form action="#" enctype="multipart/form-data" method="POST">
-                            <div class="container">
-                                <div class="row" style="margin: 1em;">
-                                    <div class="col-sm-2">
-                                        <label for="fileUpload">Upload a New File:</label>
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <input type="file" class="form-control-file" id="fileUpload" name="fileUpload">
-                                    </div>
-                                    <div class="col-sm-4">
-                                        <button type="submit" class="btn btn-dark">Upload</button>
-                                    </div>
-                                </div>
+        </nav>
+        <div class="tab-content" id="nav-tabContent">
+            <div aria-labelledby="nav-files-tab" class="tab-pane fade show active" id="nav-files" role="tabpanel">
+                <form enctype="multipart/form-data" method="POST" th:action="@{/upload}">
+                    <div class="container">
+                        <div class="row" style="margin: 1em;">
+                            <div class="col-sm-2">
+                                <label for="fileUpload">Upload a New File:</label>
                             </div>
-                        </form>
-                        <div class="table-responsive">
-                            <table class="table table-striped" id="fileTable">
-                                <thead>
-                                    <tr>
-                                        <th style="width: 20%" scope="col"></th>
-                                        <th style="width: 80%" scope="col">File Name</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                <tr>
-                                    <td>
-                                        <a target="_blank" class="btn btn-success">View</a>
-                                        <a  class="btn btn-danger">Delete</a>
-                                    </td>
-                                    <th scope="row">ExampleFile.txt</th>
-                                </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                    <div class="tab-pane fade" id="nav-notes" role="tabpanel" aria-labelledby="nav-notes-tab">
-                        <button style="margin: 0.25em;" type="button" class="btn btn-info float-right" onclick="showNoteModal()">
-                            + Add a New Note
-                        </button>
-
-                        <div class="table-responsive">
-                            <table class="table table-striped" id="userTable">
-                                <thead>
-                                    <tr>
-                                        <th style="width: 20%" scope="col"></th>
-                                        <th style="width: 20%" scope="col">Title</th>
-                                        <th style="width: 60%" scope="col">Description</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>
-                                            <button type="button" class="btn btn-success">Edit</button>
-                                            <a class="btn btn-danger">Delete</a>
-                                        </td>
-                                        <th scope="row">Example Note Title</th>
-                                        <td>Example Note Description </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-
-                        <div class="modal fade" id="noteModal" tabindex="-1" role="dialog" aria-labelledby="noteModalLabel" aria-hidden="true">
-                            <div class="modal-dialog" role="document">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title" id="noteModalLabel">Note</h5>
-                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                        </button>
-                                    </div>
-                                    <div class="modal-body">
-                                        <form action="#" method="POST">
-                                            <input type="hidden" name="noteId" id="note-id">
-                                            <div class="form-group">
-                                                <label for="note-title" class="col-form-label">Title</label>
-                                                <input type="text" name= "noteTitle" class="form-control" id="note-title" maxlength="20" required>
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="note-description" class="col-form-label">Description</label>
-                                                <textarea class="form-control" name="noteDescription" id="note-description" rows="5" maxlength="1000" required></textarea>
-                                            </div>
-                                            <button id="noteSubmit" type="submit" class="d-none"></button>
-                                        </form>
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                        <button type="button" class="btn btn-primary" onclick="$('#noteSubmit').click();">Save changes</button>
-                                    </div>
-                                </div>
+                            <div class="col-sm-6">
+                                <input class="form-control-file" id="fileUpload" name="fileUpload" type="file">
+                            </div>
+                            <div class="col-sm-4">
+                                <button class="btn btn-dark" type="submit">Upload</button>
                             </div>
                         </div>
                     </div>
-                    <div class="tab-pane fade" id="nav-credentials" role="tabpanel" aria-labelledby="nav-credentials-tab">
-                        <button style="margin: 0.25em;" type="button" class="btn btn-info float-right" onclick="showCredentialModal()">
-                            + Add a New Credential
-                        </button>
+                </form>
+                <div class="table-responsive">
+                    <table class="table table-striped" id="fileTable">
+                        <thead>
+                        <tr>
+                            <th scope="col" style="width: 20%"></th>
+                            <th scope="col" style="width: 80%">File Name</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:unless="${files.size() > 0}">
+                            <td></td>
+                            <td>No files have been uploaded yet.</td>
+                        </tr>
+                        <tr th:each="file: ${files}">
+                            <td>
+                                <a class="btn btn-success" target="_blank"
+                                   th:href="@{/file/{fileId}(fileId=${file.getFileId()})}">View</a>
+                                <a class="btn btn-danger">Delete</a>
+                            </td>
+                            <th scope="row" th:text="${file.getFileName()}"></th>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div aria-labelledby="nav-notes-tab" class="tab-pane fade" id="nav-notes" role="tabpanel">
+                <button class="btn btn-info float-right" onclick="showNoteModal()" style="margin: 0.25em;"
+                        type="button">
+                    + Add a New Note
+                </button>
 
-                        <div class="table-responsive">
-                            <table class="table table-striped" th:object="${credentials}" id="credentialTable">
-                                <thead>
-                                    <tr>
-                                        <th style="width: 20%" scope="col"></th>
-                                        <th style="width: 35%" scope="col">URL</th>
-                                        <th style="width: 20%" scope="col">Username</th>
-                                        <th style="width: 25%" scope="col">Password</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                <tr>
-                                    <td>
-                                        <button type="button" class="btn btn-success">Edit</button>
-                                        <a class="btn btn-danger">Delete</a>
-                                    </td>
-                                    <th scope="row">Example Credential URL</th>
-                                    <td>Example Credential Username</td>
-                                    <td>Example Credential Password</td>
-                                </tr>
-                                </tbody>
-                            </table>
+                <div class="table-responsive">
+                    <table class="table table-striped" id="userTable">
+                        <thead>
+                        <tr>
+                            <th scope="col" style="width: 20%"></th>
+                            <th scope="col" style="width: 20%">Title</th>
+                            <th scope="col" style="width: 60%">Description</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>
+                                <button class="btn btn-success" type="button">Edit</button>
+                                <a class="btn btn-danger">Delete</a>
+                            </td>
+                            <th scope="row">Example Note Title</th>
+                            <td>Example Note Description</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div aria-hidden="true" aria-labelledby="noteModalLabel" class="modal fade" id="noteModal" role="dialog"
+                     tabindex="-1">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="noteModalLabel">Note</h5>
+                                <button aria-label="Close" class="close" data-dismiss="modal" type="button">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <form action="#" method="POST">
+                                    <input id="note-id" name="noteId" type="hidden">
+                                    <div class="form-group">
+                                        <label class="col-form-label" for="note-title">Title</label>
+                                        <input class="form-control" id="note-title" maxlength="20" name="noteTitle"
+                                               required type="text">
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-form-label" for="note-description">Description</label>
+                                        <textarea class="form-control" id="note-description" maxlength="1000"
+                                                  name="noteDescription" required rows="5"></textarea>
+                                    </div>
+                                    <button class="d-none" id="noteSubmit" type="submit"></button>
+                                </form>
+                            </div>
+                            <div class="modal-footer">
+                                <button class="btn btn-secondary" data-dismiss="modal" type="button">Close</button>
+                                <button class="btn btn-primary" onclick="$('#noteSubmit').click();" type="button">Save
+                                    changes
+                                </button>
+                            </div>
                         </div>
+                    </div>
+                </div>
+            </div>
+            <div aria-labelledby="nav-credentials-tab" class="tab-pane fade" id="nav-credentials" role="tabpanel">
+                <button class="btn btn-info float-right" onclick="showCredentialModal()" style="margin: 0.25em;"
+                        type="button">
+                    + Add a New Credential
+                </button>
 
-                        <div class="modal fade" id="credentialModal" tabindex="-1" role="dialog" aria-labelledby="credentialModalLabel" aria-hidden="true">
-                            <div class="modal-dialog" role="document">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title" id="credentialModalLabel">Credential</h5>
-                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                        </button>
+                <div class="table-responsive">
+                    <table class="table table-striped" id="credentialTable" th:object="${credentials}">
+                        <thead>
+                        <tr>
+                            <th scope="col" style="width: 20%"></th>
+                            <th scope="col" style="width: 35%">URL</th>
+                            <th scope="col" style="width: 20%">Username</th>
+                            <th scope="col" style="width: 25%">Password</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>
+                                <button class="btn btn-success" type="button">Edit</button>
+                                <a class="btn btn-danger">Delete</a>
+                            </td>
+                            <th scope="row">Example Credential URL</th>
+                            <td>Example Credential Username</td>
+                            <td>Example Credential Password</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div aria-hidden="true" aria-labelledby="credentialModalLabel" class="modal fade" id="credentialModal"
+                     role="dialog" tabindex="-1">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="credentialModalLabel">Credential</h5>
+                                <button aria-label="Close" class="close" data-dismiss="modal" type="button">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <form action="#" method="POST">
+                                    <input id="credential-id" name="credentialId" type="hidden">
+                                    <div class="form-group">
+                                        <label class="col-form-label" for="credential-url">URL</label>
+                                        <input class="form-control" id="credential-url" maxlength="100" name="url"
+                                               required type="text">
                                     </div>
-                                    <div class="modal-body">
-                                        <form action="#" method="POST">
-                                            <input type="hidden" name="credentialId" id="credential-id">
-                                            <div class="form-group">
-                                                <label for="note-title" class="col-form-label">URL</label>
-                                                <input type="text" name= "url" class="form-control" id="credential-url" maxlength="100" required>
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="note-title" class="col-form-label">Username</label>
-                                                <input type="text" name= "username" class="form-control" id="credential-username" maxlength="30" required>
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="note-title" class="col-form-label">Password</label>
-                                                <input type="text" name= "password" class="form-control" id="credential-password" maxlength="30" required>
-                                            </div>
-                                            <button id="credentialSubmit" type="submit" class="d-none"></button>
-                                        </form>
+                                    <div class="form-group">
+                                        <label class="col-form-label" for="credential-username">Username</label>
+                                        <input class="form-control" id="credential-username" maxlength="30"
+                                               name="username"
+                                               required type="text">
                                     </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                        <button type="button" class="btn btn-primary" onclick="$('#credentialSubmit').click();">Save changes</button>
+                                    <div class="form-group">
+                                        <label class="col-form-label" for="credential-password">Password</label>
+                                        <input class="form-control" id="credential-password" maxlength="30"
+                                               name="password"
+                                               required type="text">
                                     </div>
-                                </div>
+                                    <button class="d-none" id="credentialSubmit" type="submit"></button>
+                                </form>
+                            </div>
+                            <div class="modal-footer">
+                                <button class="btn btn-secondary" data-dismiss="modal" type="button">Close</button>
+                                <button class="btn btn-primary" onclick="$('#credentialSubmit').click();" type="button">
+                                    Save changes
+                                </button>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+    </div>
+</div>
 
-        <script th:src="@{/js/jquery-slim.min.js}"></script>
-        <script th:src="@{/js/popper.min.js}"></script>
-        <script th:src="@{/js/bootstrap.min.js}"></script>
+<script th:src="@{/js/jquery-slim.min.js}"></script>
+<script th:src="@{/js/popper.min.js}"></script>
+<script th:src="@{/js/bootstrap.min.js}"></script>
 
-        <!--For opening the note modal-->
-        <script type="text/javascript">
-            // For opening the note modal
-            function showNoteModal(noteId, noteTitle, noteDescription) {
-                $('#note-id').val(noteId ? noteId : '');
-                $('#note-title').val(noteTitle ? noteTitle : '');
-                $('#note-description').val(noteDescription ? noteDescription : '');
-                $('#noteModal').modal('show');
-            }
+<!--For opening the note modal-->
+<script type="text/javascript">
+  // For opening the note modal
+  function showNoteModal(noteId, noteTitle, noteDescription) {
+    $('#note-id').val(noteId ? noteId : '');
+    $('#note-title').val(noteTitle ? noteTitle : '');
+    $('#note-description').val(noteDescription ? noteDescription : '');
+    $('#noteModal').modal('show');
+  }
 
-            // For opening the credentials modal
-            function showCredentialModal(credentialId, url, username, password) {
-                $('#credential-id').val(credentialId ? credentialId : '');
-                $('#credential-url').val(url ? url : '');
-                $('#credential-username').val(username ? username : '');
-                $('#credential-password').val(password ? password : '');
-                $('#credentialModal').modal('show');
-            }
-        </script>
-    </body>
+  // For opening the credentials modal
+  function showCredentialModal(credentialId, url, username, password) {
+    $('#credential-id').val(credentialId ? credentialId : '');
+    $('#credential-url').val(url ? url : '');
+    $('#credential-username').val(username ? username : '');
+    $('#credential-password').val(password ? password : '');
+    $('#credentialModal').modal('show');
+  }
+</script>
+</body>
 </html>
