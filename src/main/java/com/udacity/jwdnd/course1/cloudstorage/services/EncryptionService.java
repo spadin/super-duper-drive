@@ -1,15 +1,14 @@
 package com.udacity.jwdnd.course1.cloudstorage.services;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Service;
-
-import javax.crypto.*;
-import javax.crypto.spec.SecretKeySpec;
 import java.nio.charset.StandardCharsets;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.util.Base64;
+import javax.crypto.*;
+import javax.crypto.spec.SecretKeySpec;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
 
 @Service
 public class EncryptionService {
@@ -26,10 +25,10 @@ public class EncryptionService {
             encryptedValue = cipher.doFinal(data.getBytes(StandardCharsets.UTF_8));
         } catch (
             NoSuchAlgorithmException
-                | NoSuchPaddingException
-                | InvalidKeyException
-                | IllegalBlockSizeException
-                | BadPaddingException e
+            | NoSuchPaddingException
+            | InvalidKeyException
+            | IllegalBlockSizeException
+            | BadPaddingException e
         ) {
             logger.error(e.getMessage());
         }
@@ -47,10 +46,10 @@ public class EncryptionService {
             decryptedValue = cipher.doFinal(Base64.getDecoder().decode(data));
         } catch (
             NoSuchAlgorithmException
-                | NoSuchPaddingException
-                | InvalidKeyException
-                | IllegalBlockSizeException
-                | BadPaddingException e
+            | NoSuchPaddingException
+            | InvalidKeyException
+            | IllegalBlockSizeException
+            | BadPaddingException e
         ) {
             logger.error(e.getMessage());
         }

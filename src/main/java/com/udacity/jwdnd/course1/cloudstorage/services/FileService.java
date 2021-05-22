@@ -34,8 +34,8 @@ public class FileService {
         return this.fileMapper.insert(file);
     }
 
-    public File getFileByFileIdAndUserId(int fileId, int userId) {
-        return this.fileMapper.getFileByFileIdAndUserId(fileId, userId);
+    public File getFileByFileIdAndUser(int fileId, User user) {
+        return this.fileMapper.getFileByFileIdAndUserId(fileId, user.getUserId());
     }
 
     protected byte[] getFileData(MultipartFile fileUpload) {
@@ -44,5 +44,15 @@ public class FileService {
         } catch (IOException e) {
             return new byte[0];
         }
+    }
+
+    public boolean deleteFileByFileIdAndUser(int fileId, User user) {
+        return this.fileMapper.deleteFileByFileIdAndUserId(fileId, user.getUserId());
+    }
+
+    public boolean fileWithFilenameAndUserExists(String filename, User user) {
+        return (
+            this.fileMapper.getFileByFilenameAndUserId(filename, user.getUserId()) != null
+        );
     }
 }

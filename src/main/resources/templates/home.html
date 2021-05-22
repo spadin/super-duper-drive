@@ -30,7 +30,7 @@
         </nav>
         <div class="tab-content" id="nav-tabContent">
             <div aria-labelledby="nav-files-tab" class="tab-pane fade show active" id="nav-files" role="tabpanel">
-                <form enctype="multipart/form-data" method="POST" th:action="@{/upload}">
+                <form enctype="multipart/form-data" method="POST" th:action="@{/file/upload}">
                     <div class="container">
                         <div class="row" style="margin: 1em;">
                             <div class="col-sm-2">
@@ -61,8 +61,9 @@
                         <tr th:each="file: ${files}">
                             <td>
                                 <a class="btn btn-success" target="_blank"
-                                   th:href="@{/file/{fileId}(fileId=${file.getFileId()})}">View</a>
-                                <a class="btn btn-danger">Delete</a>
+                                   th:href="@{/file/download/{fileId}(fileId=${file.getFileId()})}">View</a>
+                                <a class="btn btn-danger"
+                                   th:href="@{/file/delete/{fileId}(fileId=${file.getFileId()})}">Delete</a>
                             </td>
                             <th scope="row" th:text="${file.getFileName()}"></th>
                         </tr>

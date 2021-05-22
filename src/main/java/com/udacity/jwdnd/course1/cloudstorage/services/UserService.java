@@ -4,6 +4,8 @@ import com.udacity.jwdnd.course1.cloudstorage.mapper.UserMapper;
 import com.udacity.jwdnd.course1.cloudstorage.model.User;
 import java.security.SecureRandom;
 import java.util.Base64;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -42,5 +44,13 @@ public class UserService {
 
     public User getUser(String username) {
         return this.userMapper.getUser(username);
+    }
+
+    public User getCurrentUser() {
+        Authentication authentication = SecurityContextHolder
+            .getContext()
+            .getAuthentication();
+        String username = (String) authentication.getPrincipal();
+        return this.getUser(username);
     }
 }
