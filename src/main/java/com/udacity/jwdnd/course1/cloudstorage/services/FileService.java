@@ -3,10 +3,11 @@ package com.udacity.jwdnd.course1.cloudstorage.services;
 import com.udacity.jwdnd.course1.cloudstorage.mapper.FileMapper;
 import com.udacity.jwdnd.course1.cloudstorage.model.File;
 import com.udacity.jwdnd.course1.cloudstorage.model.User;
-import java.io.IOException;
-import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
+import java.util.List;
 
 @Service
 public class FileService {
@@ -17,11 +18,11 @@ public class FileService {
         this.fileMapper = fileMapper;
     }
 
-    public List<File> getFilesForUserId(int userId) {
+    public List<File> getFilesForUserId(Integer userId) {
         return this.fileMapper.getFilesForUserId(userId);
     }
 
-    public int createFile(MultipartFile fileUpload, User user) {
+    public Integer createFile(MultipartFile fileUpload, User user) {
         File file = new File(
             null,
             fileUpload.getOriginalFilename(),
@@ -34,7 +35,7 @@ public class FileService {
         return this.fileMapper.insert(file);
     }
 
-    public File getFileByFileIdAndUser(int fileId, User user) {
+    public File getFileByFileIdAndUser(Integer fileId, User user) {
         return this.fileMapper.getFileByFileIdAndUserId(fileId, user.getUserId());
     }
 
@@ -46,7 +47,7 @@ public class FileService {
         }
     }
 
-    public boolean deleteFileByFileIdAndUser(int fileId, User user) {
+    public boolean deleteFileByFileIdAndUser(Integer fileId, User user) {
         return this.fileMapper.deleteFileByFileIdAndUserId(fileId, user.getUserId());
     }
 

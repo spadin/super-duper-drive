@@ -11,7 +11,7 @@ import org.springframework.boot.web.server.LocalServerPort;
 class CloudStorageApplicationTests {
 
     @LocalServerPort
-    private int port;
+    private Integer port;
 
     private WebDriver driver;
 

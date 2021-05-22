@@ -40,8 +40,8 @@ public class FileController {
                 "result",
                 ResultFactory.createErrorResult(
                     "A file with the filename \"" +
-                    filename +
-                    "\" already exists. Try uploading a different file or deleting the file from the app before re-uploading."
+                        filename +
+                        "\" already exists. Try uploading a different file or deleting the file from the app before re-uploading."
                 )
             );
         } else {
@@ -55,15 +55,16 @@ public class FileController {
     }
 
     @GetMapping(value = "/download/{fileIdString}")
-    public @ResponseBody ResponseEntity<Resource> getFileByFileId(
+    public @ResponseBody
+    ResponseEntity<Resource> getFileByFileId(
         @PathVariable String fileIdString
     ) {
-        int fileId = Integer.parseInt(fileIdString);
+        Integer fileId = Integer.parseInt(fileIdString);
         File file =
             this.fileService.getFileByFileIdAndUser(
-                    fileId,
-                    this.userService.getCurrentUser()
-                );
+                fileId,
+                this.userService.getCurrentUser()
+            );
 
         ByteArrayResource resource = new ByteArrayResource(file.getFileData());
         return ResponseEntity
@@ -82,12 +83,12 @@ public class FileController {
         @PathVariable String fileIdString,
         RedirectAttributes redirectAttributes
     ) {
-        int fileId = Integer.parseInt(fileIdString);
+        Integer fileId = Integer.parseInt(fileIdString);
 
         this.fileService.deleteFileByFileIdAndUser(
-                fileId,
-                this.userService.getCurrentUser()
-            );
+            fileId,
+            this.userService.getCurrentUser()
+        );
 
         redirectAttributes.addFlashAttribute(
             "result",
