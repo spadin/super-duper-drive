@@ -31,7 +31,7 @@ public class FileController {
         User currentUser = this.userService.getCurrentUser();
         String filename = fileUpload.getOriginalFilename();
         boolean fileWithFilenameExists = this.fileService.fileWithFilenameAndUserExists(filename, currentUser);
-        if (filename.equals("")) {
+        if (filename != null && filename.equals("")) {
             redirectAttributes.addFlashAttribute("result", ResultFactory.createErrorResult(
                 "Select a file before clicking the upload button."));
         }
@@ -48,7 +48,7 @@ public class FileController {
         return "redirect:/result";
     }
 
-    @GetMapping(value = "/download/{fileIdString}")
+    @GetMapping("/download/{fileIdString}")
     public @ResponseBody
     ResponseEntity<Resource> getFileByFileId(@PathVariable String fileIdString) {
         Integer fileId = Integer.parseInt(fileIdString);
@@ -61,7 +61,7 @@ public class FileController {
             resource);
     }
 
-    @GetMapping(value = "/delete/{fileIdString}")
+    @GetMapping("/delete/{fileIdString}")
     public String deleteFileByFileId(@PathVariable String fileIdString, RedirectAttributes redirectAttributes) {
         Integer fileId = Integer.parseInt(fileIdString);
 
