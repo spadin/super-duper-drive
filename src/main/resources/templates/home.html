@@ -87,13 +87,20 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <tr>
+                        <tr th:each="note: ${notes}" th:object="${note}">
                             <td>
-                                <button class="btn btn-success" type="button">Edit</button>
-                                <a class="btn btn-danger">Delete</a>
+                                <button class="btn btn-success"
+                                        onclick="showNoteModal(this.getAttribute('data-note-id'), this.getAttribute('data-note-title'), this.getAttribute('data-note-description'))"
+                                        th:data-note-description="*{noteDescription}"
+                                        th:data-note-id="*{noteId}"
+                                        th:data-note-title="*{noteTitle}"
+                                        type="button">Edit
+                                </button>
+                                <a class="btn btn-danger"
+                                   th:href="@{/note/delete/{noteId}(noteId=*{noteId})}">Delete</a>
                             </td>
-                            <th scope="row">Example Note Title</th>
-                            <td>Example Note Description</td>
+                            <th scope="row" th:text="*{noteTitle}"></th>
+                            <td th:text="*{noteDescription}"></td>
                         </tr>
                         </tbody>
                     </table>
@@ -110,7 +117,7 @@
                                 </button>
                             </div>
                             <div class="modal-body">
-                                <form action="#" method="POST">
+                                <form method="POST" th:action="@{/note}">
                                     <input id="note-id" name="noteId" type="hidden">
                                     <div class="form-group">
                                         <label class="col-form-label" for="note-title">Title</label>
