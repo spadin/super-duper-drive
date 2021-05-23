@@ -12,10 +12,16 @@ import java.util.List;
 @Service
 public class FileService {
 
+    private final UserService userService;
     private final FileMapper fileMapper;
 
-    public FileService(FileMapper fileMapper) {
+    public FileService(UserService userService, FileMapper fileMapper) {
+        this.userService = userService;
         this.fileMapper = fileMapper;
+    }
+
+    public List<File> getFilesForCurrentUser() {
+        return this.getFilesForUserId(this.userService.getCurrentUser().getUserId());
     }
 
     public List<File> getFilesForUserId(Integer userId) {

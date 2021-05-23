@@ -27,8 +27,7 @@ public class HomeController {
 
     @GetMapping({ "/", "/home" })
     public String getHome(Principal principal, Model model) {
-        User currentUser = this.userService.getCurrentUser();
-        List<File> files = this.fileService.getFilesForUserId(currentUser.getUserId());
+        List<File> files = this.fileService.getFilesForCurrentUser();
 
         model.addAttribute("files", files);
         return "home";
