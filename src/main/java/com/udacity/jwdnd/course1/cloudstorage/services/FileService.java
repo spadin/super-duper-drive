@@ -23,14 +23,8 @@ public class FileService {
     }
 
     public Integer createFile(MultipartFile fileUpload, User user) {
-        File file = new File(
-            null,
-            fileUpload.getOriginalFilename(),
-            fileUpload.getContentType(),
-            String.valueOf(fileUpload.getSize()),
-            user.getUserId(),
-            getFileData(fileUpload)
-        );
+        File file = new File(null, fileUpload.getOriginalFilename(), fileUpload.getContentType(),
+                             String.valueOf(fileUpload.getSize()), user.getUserId(), getFileData(fileUpload));
 
         return this.fileMapper.insert(file);
     }
@@ -52,8 +46,6 @@ public class FileService {
     }
 
     public boolean fileWithFilenameAndUserExists(String filename, User user) {
-        return (
-            this.fileMapper.getFileByFilenameAndUserId(filename, user.getUserId()) != null
-        );
+        return (this.fileMapper.getFileByFilenameAndUserId(filename, user.getUserId()) != null);
     }
 }

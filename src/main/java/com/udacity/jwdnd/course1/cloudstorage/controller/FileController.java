@@ -27,73 +27,47 @@ public class FileController {
     }
 
     @PostMapping("/upload")
-    public String postUpload(
-        @RequestParam("fileUpload") MultipartFile fileUpload,
-        RedirectAttributes redirectAttributes
-    ) {
+    public String postUpload(@RequestParam("fileUpload") MultipartFile fileUpload, RedirectAttributes redirectAttributes) {
         User currentUser = this.userService.getCurrentUser();
         String filename = fileUpload.getOriginalFilename();
-        boolean fileWithFilenameExists =
-            this.fileService.fileWithFilenameAndUserExists(filename, currentUser);
-        if (fileWithFilenameExists) {
-            redirectAttributes.addFlashAttribute(
-                "result",
-                ResultFactory.createErrorResult(
-                    "A file with the filename \"" +
-                        filename +
-                        "\" already exists. Try uploading a different file or deleting the file from the app before re-uploading."
-                )
-            );
-        } else {
-            this.fileService.createFile(fileUpload, currentUser);
-            redirectAttributes.addFlashAttribute(
-                "result",
-                ResultFactory.createSuccessResult("File uploaded successfully.")
-            );
+        boolean fileWithFilenameExists = this.fileService.fileWithFilenameAndUserExists(filename, currentUser);
+        if (filename.equals("")) {
+            redirectAttributes.addFlashAttribute("result", ResultFactory.createErrorResult(
+                "Select a file before clicking the upload button."));
         }
+        else if (fileWithFilenameExists) {
+            redirectAttributes.addFlashAttribute("result", ResultFactory.createErrorResult(
+                "A file with the filename \"" + filename + "\" already exists. Try uploading a different file or deleting the file from the app before re-uploading."));
+        }
+        else {
+            this.fileService.createFile(fileUpload, currentUser);
+            redirectAttributes.addFlashAttribute("result",
+                                                 ResultFactory.createSuccessResult("File uploaded successfully."));
+        }
+
         return "redirect:/result";
     }
 
     @GetMapping(value = "/download/{fileIdString}")
     public @ResponseBody
-    ResponseEntity<Resource> getFileByFileId(
-        @PathVariable String fileIdString
-    ) {
+    ResponseEntity<Resource> getFileByFileId(@PathVariable String fileIdString) {
         Integer fileId = Integer.parseInt(fileIdString);
-        File file =
-            this.fileService.getFileByFileIdAndUser(
-                fileId,
-                this.userService.getCurrentUser()
-            );
+        File file = this.fileService.getFileByFileIdAndUser(fileId, this.userService.getCurrentUser());
 
         ByteArrayResource resource = new ByteArrayResource(file.getFileData());
-        return ResponseEntity
-            .ok()
-            .contentLength(Long.parseLong(file.getFileSize()))
-            .contentType(MediaType.parseMediaType(file.getContentType()))
-            .header(
-                "Content-Disposition",
-                "attachment; filename=\"" + file.getFileName() + "\""
-            )
-            .body(resource);
+        return ResponseEntity.ok().contentLength(Long.parseLong(file.getFileSize())).contentType(
+            MediaType.parseMediaType(file.getContentType())).header("Content-Disposition",
+                                                                    "attachment; filename=\"" + file.getFileName() + "\"").body(
+            resource);
     }
 
     @GetMapping(value = "/delete/{fileIdString}")
-    public String deleteFileByFileId(
-        @PathVariable String fileIdString,
-        RedirectAttributes redirectAttributes
-    ) {
+    public String deleteFileByFileId(@PathVariable String fileIdString, RedirectAttributes redirectAttributes) {
         Integer fileId = Integer.parseInt(fileIdString);
 
-        this.fileService.deleteFileByFileIdAndUser(
-            fileId,
-            this.userService.getCurrentUser()
-        );
+        this.fileService.deleteFileByFileIdAndUser(fileId, this.userService.getCurrentUser());
 
-        redirectAttributes.addFlashAttribute(
-            "result",
-            ResultFactory.createSuccessResult("File deleted successfully.")
-        );
+        redirectAttributes.addFlashAttribute("result", ResultFactory.createSuccessResult("File deleted successfully."));
         return "redirect:/result";
     }
 }
