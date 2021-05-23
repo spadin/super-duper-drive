@@ -58,12 +58,12 @@
                             <td></td>
                             <td>No files have been uploaded yet.</td>
                         </tr>
-                        <tr th:each="file: ${files}">
+                        <tr th:each="file: ${files}" th:object="${file}">
                             <td>
                                 <a class="btn btn-success" target="_blank"
-                                   th:href="@{/file/download/{fileId}(fileId=${file.getFileId()})}">View</a>
+                                   th:href="@{/file/download/{fileId}(fileId=*{fileId})}">View</a>
                                 <a class="btn btn-danger"
-                                   th:href="@{/file/delete/{fileId}(fileId=${file.getFileId()})}">Delete</a>
+                                   th:href="@{/file/delete/{fileId}(fileId=*{fileId})}">Delete</a>
                             </td>
                             <th scope="row" th:text="${file.getFileName()}"></th>
                         </tr>
