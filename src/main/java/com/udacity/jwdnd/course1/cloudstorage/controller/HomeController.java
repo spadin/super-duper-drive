@@ -4,7 +4,6 @@ import com.udacity.jwdnd.course1.cloudstorage.model.File;
 import com.udacity.jwdnd.course1.cloudstorage.model.Note;
 import com.udacity.jwdnd.course1.cloudstorage.services.FileService;
 import com.udacity.jwdnd.course1.cloudstorage.services.NoteService;
-import com.udacity.jwdnd.course1.cloudstorage.services.UserService;
 import java.security.Principal;
 import java.util.List;
 import org.slf4j.Logger;
@@ -16,14 +15,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class HomeController {
 
-  private final UserService userService;
   private final FileService fileService;
   private final NoteService noteService;
 
   private final Logger logger = LoggerFactory.getLogger(HomeController.class);
 
-  public HomeController(UserService userService, FileService fileService, NoteService noteService) {
-    this.userService = userService;
+  public HomeController(FileService fileService, NoteService noteService) {
     this.fileService = fileService;
     this.noteService = noteService;
   }
