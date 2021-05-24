@@ -7,6 +7,7 @@ public class Credential {
   private String username;
   private String key;
   private String password;
+  private String plainTextPassword;
   private Integer userId;
 
   public Credential(
@@ -62,6 +63,14 @@ public class Credential {
 
   public void setPassword(String password) {
     this.password = password;
+  }
+
+  public String getPlainTextPassword() {
+    return plainTextPassword;
+  }
+
+  public void setPlainTextPassword(String plainTextPassword) {
+    this.plainTextPassword = plainTextPassword;
   }
 
   public Integer getUserId() {

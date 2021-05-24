@@ -69,7 +69,7 @@
                 <a class="btn btn-danger"
                    th:href="@{/file/delete/{fileId}(fileId=*{fileId})}">Delete</a>
               </td>
-              <th scope="row" th:text="${file.getFileName()}"></th>
+              <th scope="row" th:text="*{fileName}"></th>
             </tr>
             </tbody>
           </table>
@@ -161,7 +161,7 @@
         </button>
 
         <div class="table-responsive">
-          <table class="table table-striped" id="credentialTable" th:object="${credentials}">
+          <table class="table table-striped" id="credentialTable">
             <thead>
             <tr>
               <th scope="col" style="width: 20%"></th>
@@ -173,13 +173,19 @@
             <tbody>
             <tr th:each="credential: ${credentials}" th:object="${credential}">
               <td>
-                <button class="btn btn-success" onclick="showCredentialModal()" type="button">Edit
+                <button class="btn btn-success"
+                        onclick="showCredentialModal(this.getAttribute('data-credential-id'), this.getAttribute('data-url'), this.getAttribute('data-username'), this.getAttribute('data-plain-text-password'))"
+                        th:data-credential-id="*{credentialId}"
+                        th:data-plain-text-password="*{plainTextPassword}" th:data-url="*{url}"
+                        th:data-username="*{username}" type="button">
+                  Edit
                 </button>
-                <a class="btn btn-danger">Delete</a>
+                <a class="btn btn-danger"
+                   th:href="@{/credential/delete/{credentialId}(credentialId=*{credentialId})}">Delete</a>
               </td>
-              <th scope="row">Example Credential URL</th>
-              <td>Example Credential Username</td>
-              <td>Example Credential Password</td>
+              <th scope="row" th:text="*{url}"></th>
+              <td th:text="*{username}"></td>
+              <td th:text="*{password}"></td>
             </tr>
             </tbody>
           </table>
