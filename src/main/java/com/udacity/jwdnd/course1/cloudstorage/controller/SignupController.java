@@ -13,38 +13,38 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/signup")
 public class SignupController {
 
-    private final UserService userService;
+  private final UserService userService;
 
-    public SignupController(UserService userService) {
-        this.userService = userService;
+  public SignupController(UserService userService) {
+    this.userService = userService;
+  }
+
+  @GetMapping
+  public String signupView() {
+    return "signup";
+  }
+
+  @PostMapping
+  public String signupUser(@ModelAttribute User user, Model model) {
+    String signupError = null;
+
+    if (!userService.isUsernameAvailable(user.getUsername())) {
+      signupError = "The username already exists.";
     }
 
-    @GetMapping
-    public String signupView() {
-        return "signup";
+    if (signupError == null) {
+      Integer rowsAdded = userService.createUser(user);
+      if (rowsAdded < 0) {
+        signupError = "There was an error signing you up. Please try again.";
+      }
     }
 
-    @PostMapping
-    public String signupUser(@ModelAttribute User user, Model model) {
-        String signupError = null;
-
-        if (!userService.isUsernameAvailable(user.getUsername())) {
-            signupError = "The username already exists.";
-        }
-
-        if (signupError == null) {
-            Integer rowsAdded = userService.createUser(user);
-            if (rowsAdded < 0) {
-                signupError = "There was an error signing you up. Please try again.";
-            }
-        }
-
-        if (signupError == null) {
-            model.addAttribute("signupSuccess", true);
-        } else {
-            model.addAttribute("signupError", signupError);
-        }
-
-        return "signup";
+    if (signupError == null) {
+      model.addAttribute("signupSuccess", true);
+    } else {
+      model.addAttribute("signupError", signupError);
     }
+
+    return "signup";
+  }
 }
