@@ -52,15 +52,6 @@ public class CredentialService {
     }
   }
 
-  private String generateKey() {
-    String key;
-    SecureRandom random = new SecureRandom();
-    byte[] salt = new byte[16];
-    random.nextBytes(salt);
-    key = Base64.getEncoder().encodeToString(salt);
-    return key;
-  }
-
   public void deleteCredentialByCredentialId(Integer credentialId) {
     Integer userId = this.userService.getCurrentUser().getUserId();
     this.credentialMapper.deleteCredentialByCredentialId(credentialId, userId);
@@ -71,5 +62,12 @@ public class CredentialService {
         this.encryptionService.decryptValue(credential.getPassword(), credential.getKey()));
 
     return credential;
+  }
+
+  protected String generateKey() {
+    byte[] key = new byte[16];
+    SecureRandom random = new SecureRandom();
+    random.nextBytes(key);
+    return Base64.getEncoder().encodeToString(key);
   }
 }
