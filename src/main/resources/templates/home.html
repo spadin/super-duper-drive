@@ -87,6 +87,10 @@
                         </tr>
                         </thead>
                         <tbody>
+                        <tr th:unless="${notes.size() > 0}">
+                            <td></td>
+                            <td colspan="2">No notes have been created yet.</td>
+                        </tr>
                         <tr th:each="note: ${notes}" th:object="${note}">
                             <td>
                                 <button class="btn btn-success"
