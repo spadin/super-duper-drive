@@ -24,13 +24,21 @@ public class NoteService {
     return this.noteMapper.getNotesForUserId(userId);
   }
 
-  public Integer createOrUpdateNote(Note note) {
-    note.setUserId(this.userService.getCurrentUser().getUserId());
+  public Integer createOrUpdateNote(Note note) throws DataTooLargeException {
+    try {
+      note.setUserId(this.userService.getCurrentUser().getUserId());
 
-    if (note.getNoteId() == null) {
-      return this.noteMapper.insert(note);
-    } else {
-      return this.noteMapper.update(note);
+      if (note.getNoteId() == null) {
+        return this.noteMapper.insert(note);
+      } else {
+        return this.noteMapper.update(note);
+      }
+    } catch (RuntimeException e) {
+      if (e.getMessage().contains("Value too long for column")) {
+        throw new DataTooLargeException(e.getMessage());
+      } else {
+        throw e;
+      }
     }
   }
 
