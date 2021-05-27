@@ -26,19 +26,34 @@ public class NoteService {
 
   public Integer createOrUpdateNote(Note note)
       throws DataTooLargeException, AlreadyExistsException {
-    try {
-      Integer currentUserId = this.userService.getCurrentUser().getUserId();
-      note.setUserId(currentUserId);
+    note.setUserId(this.userService.getCurrentUser().getUserId());
+    return handleCreateOrUpdateNote(note);
+  }
 
+  public void deleteNoteById(Integer noteId) {
+    Integer userId = this.userService.getCurrentUser().getUserId();
+    this.noteMapper.deleteNoteByNoteId(noteId, userId);
+  }
+
+  protected Integer insertNote(Note note) throws AlreadyExistsException {
+    if (this.noteMapper.getNoteByNoteTitleAndUserId(note) != null) {
+      throw new AlreadyExistsException("Note already exists.");
+    } else {
+      return this.noteMapper.insert(note);
+    }
+  }
+
+  protected Integer updateNote(Note note) {
+    return this.noteMapper.update(note);
+  }
+
+  protected Integer handleCreateOrUpdateNote(Note note)
+      throws AlreadyExistsException, DataTooLargeException {
+    try {
       if (note.getNoteId() == null) {
-        if (this.noteMapper.getNoteByNoteTitleAndUserId(note.getNoteTitle(), currentUserId)
-            != null) {
-          throw new AlreadyExistsException("Note already exists.");
-        } else {
-          return this.noteMapper.insert(note);
-        }
+        return insertNote(note);
       } else {
-        return this.noteMapper.update(note);
+        return updateNote(note);
       }
     } catch (RuntimeException e) {
       if (e.getMessage().contains("Value too long for column")) {
@@ -47,10 +62,5 @@ public class NoteService {
         throw e;
       }
     }
-  }
-
-  public void deleteNoteById(Integer noteId) {
-    Integer userId = this.userService.getCurrentUser().getUserId();
-    this.noteMapper.deleteNoteByNoteId(noteId, userId);
   }
 }
