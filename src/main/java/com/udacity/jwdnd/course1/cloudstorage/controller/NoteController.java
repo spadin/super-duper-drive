@@ -2,6 +2,7 @@ package com.udacity.jwdnd.course1.cloudstorage.controller;
 
 import com.udacity.jwdnd.course1.cloudstorage.model.Note;
 import com.udacity.jwdnd.course1.cloudstorage.model.ResultFactory;
+import com.udacity.jwdnd.course1.cloudstorage.services.AlreadyExistsException;
 import com.udacity.jwdnd.course1.cloudstorage.services.DataTooLargeException;
 import com.udacity.jwdnd.course1.cloudstorage.services.NoteService;
 import org.springframework.stereotype.Controller;
@@ -33,6 +34,11 @@ public class NoteController {
       redirectAttributes.addFlashAttribute(
           "result",
           ResultFactory.createErrorResult("Note contents too large. Please make note smaller."));
+    } catch (AlreadyExistsException e) {
+      redirectAttributes.addFlashAttribute(
+          "result",
+          ResultFactory.createErrorResult(
+              "Note already exists. Please edit or delete the note instead."));
     } finally {
       return "redirect:/result";
     }

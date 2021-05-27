@@ -25,4 +25,7 @@ public interface NoteMapper {
 
   @Delete("DELETE NOTES WHERE noteId = #{noteId} AND userId = #{userId}")
   void deleteNoteByNoteId(Integer noteId, Integer userId);
+
+  @Select("SELECT * FROM NOTES WHERE noteTitle = #{noteTitle} AND userId = #{userId}")
+  Note getNoteByNoteTitleAndUserId(String noteTitle, Integer userId);
 }

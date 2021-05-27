@@ -24,12 +24,19 @@ public class NoteService {
     return this.noteMapper.getNotesForUserId(userId);
   }
 
-  public Integer createOrUpdateNote(Note note) throws DataTooLargeException {
+  public Integer createOrUpdateNote(Note note)
+      throws DataTooLargeException, AlreadyExistsException {
     try {
-      note.setUserId(this.userService.getCurrentUser().getUserId());
+      Integer currentUserId = this.userService.getCurrentUser().getUserId();
+      note.setUserId(currentUserId);
 
       if (note.getNoteId() == null) {
-        return this.noteMapper.insert(note);
+        if (this.noteMapper.getNoteByNoteTitleAndUserId(note.getNoteTitle(), currentUserId)
+            != null) {
+          throw new AlreadyExistsException("Note already exists.");
+        } else {
+          return this.noteMapper.insert(note);
+        }
       } else {
         return this.noteMapper.update(note);
       }
