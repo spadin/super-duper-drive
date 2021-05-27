@@ -1,5 +1,6 @@
 package com.udacity.jwdnd.course1.cloudstorage;
 
+import com.udacity.jwdnd.course1.cloudstorage.pages.HomePage;
 import com.udacity.jwdnd.course1.cloudstorage.pages.LoginPage;
 import com.udacity.jwdnd.course1.cloudstorage.pages.SignupPage;
 import io.github.bonigarcia.wdm.WebDriverManager;
@@ -32,6 +33,7 @@ class CloudStorageApplicationTests {
   private String baseUrl;
   private LoginPage loginPage;
   private SignupPage signupPage;
+  private HomePage homePage;
 
   @BeforeAll
   static void beforeAll() {
@@ -46,6 +48,7 @@ class CloudStorageApplicationTests {
     this.baseUrl = "http://localhost:" + this.port;
     this.loginPage = new LoginPage(driver, baseUrl);
     this.signupPage = new SignupPage(driver, baseUrl);
+    this.homePage = new HomePage(driver, baseUrl);
   }
 
   @AfterEach
@@ -72,8 +75,38 @@ class CloudStorageApplicationTests {
 
     signupPage.signup("John", "Smith", username, password);
 
+    loginPage.waitUntilLoaded();
     Assertions.assertTrue(driver.getCurrentUrl().contains("/login"), "assert url contains /login");
     Assertions.assertTrue(
         loginPage.isSuccessMessageDisplayed(), "assert success message is displayed");
+  }
+
+  @Test
+  @DisplayName("Visiting home redirects to login page when not logged in")
+  public void homeRedirectToLoginPageWhenNotLoggedIn() {
+    homePage.getPage();
+
+    Assertions.assertTrue(driver.getCurrentUrl().contains("/login"), "assert url contains /login");
+  }
+
+  @Test
+  @DisplayName("Logging in grants access to home, logging out takes it away")
+  public void loggingInGetsYouAccessToHome() throws InterruptedException {
+    signupPage.getPage();
+
+    String username = "john-smith-2";
+    String password = "super-secret";
+
+    signupPage.signup("John", "Smith", username, password);
+
+    loginPage.getPage();
+    loginPage.login(username, password);
+
+    homePage.getPage();
+    Assertions.assertTrue(driver.getCurrentUrl().contains("/home"), "assert url contains /home");
+
+    homePage.clickLogout();
+    homePage.getPage();
+    Assertions.assertTrue(driver.getCurrentUrl().contains("/login"), "assert url contains /login");
   }
 }
