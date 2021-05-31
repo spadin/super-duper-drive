@@ -1,5 +1,6 @@
 package com.udacity.jwdnd.course1.cloudstorage.pages;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -59,15 +60,33 @@ public class HomePage {
 
   public void setNoteTitle(String text) {
     wait.until(driver -> noteTitle.isDisplayed());
+    noteTitle.clear();
     noteTitle.sendKeys(text);
   }
 
   public void setNoteDescription(String text) {
     wait.until(driver -> noteDescription.isDisplayed());
+    noteDescription.clear();
     noteDescription.sendKeys(text);
   }
 
   public void clickNoteSubmit() {
     noteSubmit.click();
+  }
+
+  public void clickEditButtonForNoteWithTitle(String title) {
+    WebElement editButton =
+        driver.findElement(
+            By.cssSelector("button.edit-note-button[data-note-title='" + title + "']"));
+    wait.until(driver -> editButton.isDisplayed());
+    editButton.click();
+  }
+
+  public void clickDeleteButtonForNoteWithTitle(String title) {
+    WebElement deleteButton =
+        driver.findElement(By.cssSelector("a.delete-note-button[data-note-title='" + title + "']"));
+
+    wait.until(driver -> deleteButton.isDisplayed());
+    deleteButton.click();
   }
 }

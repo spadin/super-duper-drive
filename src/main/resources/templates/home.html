@@ -98,14 +98,15 @@
             </tr>
             <tr th:each="note: ${notes}" th:object="${note}">
               <td>
-                <button class="btn btn-success"
+                <button class="btn btn-success edit-note-button"
                         onclick="showNoteModal(this.getAttribute('data-note-id'), this.getAttribute('data-note-title'), this.getAttribute('data-note-description'))"
                         th:data-note-description="*{noteDescription}"
                         th:data-note-id="*{noteId}"
                         th:data-note-title="*{noteTitle}"
                         type="button">Edit
                 </button>
-                <a class="btn btn-danger"
+                <a class="btn btn-danger delete-note-button"
+                   th:data-note-title="*{noteTitle}"
                    th:href="@{/note/delete/{noteId}(noteId=*{noteId})}">Delete</a>
               </td>
               <th scope="row" th:text="*{noteTitle}"></th>
