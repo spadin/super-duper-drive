@@ -1,4 +1,4 @@
-package com.udacity.jwdnd.course1.cloudstorage.services;
+package com.udacity.jwdnd.course1.cloudstorage.service;
 
 public class DataTooLargeException extends Exception {
 

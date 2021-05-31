@@ -1,4 +1,4 @@
-package com.udacity.jwdnd.course1.cloudstorage.services;
+package com.udacity.jwdnd.course1.cloudstorage.service;
 
 import java.nio.charset.StandardCharsets;
 import java.security.InvalidKeyException;
