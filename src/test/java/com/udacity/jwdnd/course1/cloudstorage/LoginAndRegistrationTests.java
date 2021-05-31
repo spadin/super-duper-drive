@@ -24,7 +24,7 @@ import org.springframework.boot.web.server.LocalServerPort;
       "spring.datasource.url=",
       "spring.datasource.driver-class-name="
     })
-class CloudStorageApplicationTests {
+class LoginAndRegistrationTests {
 
   @LocalServerPort private Integer port;
 
@@ -42,7 +42,7 @@ class CloudStorageApplicationTests {
 
   @BeforeEach
   public void beforeEach() {
-    this.logger = LoggerFactory.getLogger(CloudStorageApplicationTests.class);
+    this.logger = LoggerFactory.getLogger(LoginAndRegistrationTests.class);
 
     this.driver = new ChromeDriver();
     this.baseUrl = "http://localhost:" + this.port;
