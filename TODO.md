@@ -1,10 +1,5 @@
 # Todo
 
-### File upload
-
-* Uploading a big file is throwing a "SizeLimitExceededException" exception and it is not handled
-  properly.
-
 ### Notes testing
 
 * Write a Selenium test that logs in an existing user, creates a note and verifies that the note
