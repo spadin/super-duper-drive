@@ -87,7 +87,7 @@ class CredentialsTests {
 
   @Test
   @DisplayName("Create a new credential")
-  public void createANewNote() throws InterruptedException {
+  public void createANewCredential() throws InterruptedException {
     loginWithTestUser();
     createCredential("http://google.com", "admin", "password");
 
@@ -100,7 +100,7 @@ class CredentialsTests {
 
   @Test
   @DisplayName("Update a credential")
-  public void updateANote() throws InterruptedException {
+  public void updateACredential() throws InterruptedException {
     loginWithTestUser();
     createCredential("http://google.com", "admin", "password");
 
@@ -120,8 +120,8 @@ class CredentialsTests {
   }
 
   @Test
-  @DisplayName("Deletes a new note")
-  public void deleteANote() throws InterruptedException {
+  @DisplayName("Deletes a new credential")
+  public void deleteACredential() throws InterruptedException {
     loginWithTestUser();
 
     // Confirm no credentials are created yet.
@@ -140,6 +140,6 @@ class CredentialsTests {
     homePage.clickCredentialsTab();
 
     // Confirm credential is deleted by checking presence of no credentials created message.
-    driver.findElement(By.xpath("//*[text()='No notes have been created yet.']"));
+    driver.findElement(By.xpath("//*[text()='No credentials have been created yet.']"));
   }
 }
