@@ -4,6 +4,7 @@ import com.udacity.jwdnd.course1.cloudstorage.helpers.UserServiceHelper;
 import com.udacity.jwdnd.course1.cloudstorage.model.User;
 import com.udacity.jwdnd.course1.cloudstorage.pages.HomePage;
 import com.udacity.jwdnd.course1.cloudstorage.pages.LoginPage;
+import com.udacity.jwdnd.course1.cloudstorage.pages.SignupPage;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
@@ -26,19 +27,19 @@ import org.springframework.boot.web.server.LocalServerPort;
       "spring.datasource.url=",
       "spring.datasource.driver-class-name="
     })
-class NotesTests {
+class CredentialsTests {
 
   @LocalServerPort private Integer port;
-
   private Logger logger;
   private WebDriver driver;
   private String baseUrl;
   private LoginPage loginPage;
+  private SignupPage signupPage;
   private HomePage homePage;
   private UserServiceHelper userServiceHelper;
 
   @Autowired
-  public NotesTests(UserServiceHelper userServiceHelper) {
+  public CredentialsTests(UserServiceHelper userServiceHelper) {
     this.userServiceHelper = userServiceHelper;
   }
 
@@ -49,11 +50,12 @@ class NotesTests {
 
   @BeforeEach
   public void beforeEach() {
-    this.logger = LoggerFactory.getLogger(NotesTests.class);
+    this.logger = LoggerFactory.getLogger(CredentialsTests.class);
 
     this.driver = new ChromeDriver();
     this.baseUrl = "http://localhost:" + this.port;
     this.loginPage = new LoginPage(driver, baseUrl);
+    this.signupPage = new SignupPage(driver, baseUrl);
     this.homePage = new HomePage(driver, baseUrl);
   }
 
@@ -71,49 +73,50 @@ class NotesTests {
     loginPage.login(user.getUsername(), user.getPassword());
   }
 
-  protected void createNote(String title, String description) {
+  protected void createCredential(String url, String username, String password) {
 
     homePage.getPage();
-    homePage.clickNotesTab();
-    homePage.clickNewNoteButton();
+    homePage.clickCredentialsTab();
+    homePage.clickNewCredentialButton();
 
-    homePage.setNoteTitle(title);
-    homePage.setNoteDescription(description);
-    homePage.clickNoteSubmit();
+    homePage.setCredentialUrl(url);
+    homePage.setCredentialUsername(username);
+    homePage.setCredentialPassword(password);
+    homePage.clickCredentialSubmit();
   }
 
   @Test
-  @DisplayName("Create a new note")
+  @DisplayName("Create a new credential")
   public void createANewNote() throws InterruptedException {
     loginWithTestUser();
-    createNote("Test Note Title", "This is a test note");
+    createCredential("http://google.com", "admin", "password");
 
     homePage.getPage();
-    homePage.clickNotesTab();
+    homePage.clickCredentialsTab();
 
-    driver.findElement(By.xpath("//*[text()='Test Note Title']"));
-    driver.findElement(By.xpath("//*[text()='This is a test note']"));
+    driver.findElement(By.xpath("//*[text()='admin']"));
+    driver.findElement(By.xpath("//*[text()='http://google.com']"));
   }
 
   @Test
-  @DisplayName("Update a note")
+  @DisplayName("Update a credential")
   public void updateANote() throws InterruptedException {
     loginWithTestUser();
-    createNote("Test Note Title", "This is a test note");
+    createCredential("http://google.com", "admin", "password");
 
     homePage.getPage();
-    homePage.clickNotesTab();
+    homePage.clickCredentialsTab();
 
-    homePage.clickEditButtonForNoteWithTitle("Test Note Title");
-    homePage.setNoteTitle("Updated note title");
-    homePage.setNoteDescription("Updated note description");
-    homePage.clickNoteSubmit();
+    homePage.clickEditButtonForCredentialWithUrl("http://google.com");
+    homePage.setCredentialUrl("http://yahoo.com");
+    homePage.setCredentialUsername("root");
+    homePage.clickCredentialSubmit();
 
     homePage.getPage();
-    homePage.clickNotesTab();
+    homePage.clickCredentialsTab();
 
-    driver.findElement(By.xpath("//*[text()='Updated note title']"));
-    driver.findElement(By.xpath("//*[text()='Updated note description']"));
+    driver.findElement(By.xpath("//*[text()='root']"));
+    driver.findElement(By.xpath("//*[text()='http://yahoo.com']"));
   }
 
   @Test
@@ -121,22 +124,22 @@ class NotesTests {
   public void deleteANote() throws InterruptedException {
     loginWithTestUser();
 
-    // Confirm no notes are created yet.
+    // Confirm no credentials are created yet.
     homePage.getPage();
-    homePage.clickNotesTab();
+    homePage.clickCredentialsTab();
 
-    driver.findElement(By.xpath("//*[text()='No notes have been created yet.']"));
+    driver.findElement(By.xpath("//*[text()='No credentials have been created yet.']"));
 
-    createNote("Test Note Title", "This is a test note");
+    createCredential("http://google.com", "admin", "password");
 
     homePage.getPage();
-    homePage.clickNotesTab();
+    homePage.clickCredentialsTab();
 
-    homePage.clickDeleteButtonForNoteWithTitle("Test Note Title");
+    homePage.clickDeleteButtonForCredentialWithUrl("http://google.com");
     homePage.getPage();
-    homePage.clickNotesTab();
+    homePage.clickCredentialsTab();
 
-    // Confirm note is deleted by checking presence of no notes created message.
+    // Confirm credential is deleted by checking presence of no credentials created message.
     driver.findElement(By.xpath("//*[text()='No notes have been created yet.']"));
   }
 }

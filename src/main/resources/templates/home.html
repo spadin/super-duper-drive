@@ -156,7 +156,8 @@
       </div>
       <div aria-labelledby="nav-credentials-tab" class="tab-pane fade" id="nav-credentials"
            role="tabpanel">
-        <button class="btn btn-info float-right" onclick="showCredentialModal()"
+        <button class="btn btn-info float-right" id="add-a-new-credential"
+                onclick="showCredentialModal()"
                 style="margin: 0.25em;"
                 type="button">
           + Add a New Credential
@@ -173,16 +174,22 @@
             </tr>
             </thead>
             <tbody>
+            <tr th:unless="${credentials.size() > 0}">
+              <td></td>
+              <td colspan="3">No credentials have been created yet.</td>
+            </tr>
             <tr th:each="credential: ${credentials}" th:object="${credential}">
               <td>
-                <button class="btn btn-success"
+                <button class="btn btn-success edit-credential-button"
                         onclick="showCredentialModal(this.getAttribute('data-credential-id'), this.getAttribute('data-url'), this.getAttribute('data-username'), this.getAttribute('data-plain-text-password'))"
                         th:data-credential-id="*{credentialId}"
+                        th:data-credential-url="*{url}"
                         th:data-plain-text-password="*{plainTextPassword}" th:data-url="*{url}"
                         th:data-username="*{username}" type="button">
                   Edit
                 </button>
-                <a class="btn btn-danger"
+                <a class="btn btn-danger delete-credential-button"
+                   th:data-credential-url="*{url}"
                    th:href="@{/credential/delete/{credentialId}(credentialId=*{credentialId})}">Delete</a>
               </td>
               <th scope="row" th:text="*{url}"></th>
